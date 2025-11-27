@@ -8,10 +8,41 @@ const resultado = document.getElementById('resultado');
 console.log(horoscopos['aries'].mesInicio);
 console.log(horoscopos['aries'].mesFin);
 
+// Función para reproducir un sonido agradable al hacer clic
+function playClickSound() {
+    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+
+    // Crear un oscilador para generar el tono
+    const oscillator = audioContext.createOscillator();
+    const gainNode = audioContext.createGain();
+
+    // Configurar el sonido
+    oscillator.connect(gainNode);
+    gainNode.connect(audioContext.destination);
+
+    // Tono agradable (frecuencia en Hz)
+    oscillator.frequency.setValueAtTime(800, audioContext.currentTime);
+    oscillator.frequency.exponentialRampToValueAtTime(600, audioContext.currentTime + 0.1);
+
+    // Volumen suave
+    gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.15);
+
+    // Tipo de onda - 'sine' da un sonido suave
+    oscillator.type = 'sine';
+
+    // Reproducir
+    oscillator.start(audioContext.currentTime);
+    oscillator.stop(audioContext.currentTime + 0.15);
+}
+
 
 
 
 boton.addEventListener('click', function () {
+    // Reproducir sonido de clic
+    playClickSound();
+
     let fecha = document.getElementById('fecha');
     fecha = new Date(fecha.value);
 
